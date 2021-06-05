@@ -71,8 +71,8 @@ stereo::stereo(const std::shared_ptr<openvslam::config>& cfg, const std::string&
                const bool rectify)
     : system(cfg, vocab_file_path, mask_img_path),
       rectifier_(rectify ? std::make_shared<openvslam::util::stereo_rectifier>(cfg) : nullptr),
-      left_sf_(node_, "camera/left/image_raw"),
-      right_sf_(node_, "camera/right/image_raw"),
+      left_sf_(node_, "camera/left/image_raw", custom_qos_),
+      right_sf_(node_, "camera/right/image_raw", custom_qos_),
       sync_(left_sf_, right_sf_, 10) {
     sync_.registerCallback(&stereo::callback, this);
 }
@@ -103,8 +103,8 @@ void stereo::callback(const sensor_msgs::msg::Image::ConstSharedPtr& left, const
 
 rgbd::rgbd(const std::shared_ptr<openvslam::config>& cfg, const std::string& vocab_file_path, const std::string& mask_img_path)
     : system(cfg, vocab_file_path, mask_img_path),
-      color_sf_(node_, "camera/color/image_raw"),
-      depth_sf_(node_, "camera/depth/image_raw"),
+      color_sf_(node_, "camera/color/image_raw", custom_qos_),
+      depth_sf_(node_, "camera/depth/image_raw", custom_qos_),
       sync_(color_sf_, depth_sf_, 10) {
     sync_.registerCallback(&rgbd::callback, this);
 }
