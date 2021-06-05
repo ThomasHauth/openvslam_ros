@@ -13,6 +13,7 @@ system::system(const std::shared_ptr<openvslam::config>& cfg, const std::string&
       mask_(mask_img_path.empty() ? cv::Mat{} : cv::imread(mask_img_path, cv::IMREAD_GRAYSCALE)),
       pose_pub_(node_->create_publisher<nav_msgs::msg::Odometry>("~/camera_pose", 1)) {
     custom_qos_.depth = 1;
+    custom_qos_.reliability = RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT;
     exec_.add_node(node_);
 }
 
